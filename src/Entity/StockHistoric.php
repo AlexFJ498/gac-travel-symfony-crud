@@ -18,16 +18,6 @@ class StockHistoric
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $user_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $product_id;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -36,6 +26,18 @@ class StockHistoric
      * @ORM\Column(type="integer")
      */
     private $stock;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="stockHistorics")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Products::class, inversedBy="stockHistorics")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $product;
 
     public function getId(): ?int
     {
@@ -86,6 +88,30 @@ class StockHistoric
     public function setStock(int $stock): self
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Products
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Products $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

@@ -1,3 +1,0 @@
-user_list:
-  path: /user/list
-  controller: App\Controller\UserController::listUser

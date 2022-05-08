@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,11 +25,6 @@ class Products
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $category_id;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -36,6 +33,22 @@ class Products
      * @ORM\Column(type="integer")
      */
     private $stock;
+
+    /**
+     * @ORM\OneToMany(targetEntity=StockHistoric::class, mappedBy="product")
+     */
+    private $stockHistorics;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    public function __construct()
+    {
+        $this->stockHistorics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +99,48 @@ class Products
     public function setStock(int $stock): self
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|StockHistoric[]
+     */
+    public function getStockHistorics(): Collection
+    {
+        return $this->stockHistorics;
+    }
+
+    public function addStockHistoric(StockHistoric $stockHistoric): self
+    {
+        if (!$this->stockHistorics->contains($stockHistoric)) {
+            $this->stockHistorics[] = $stockHistoric;
+            $stockHistoric->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockHistoric(StockHistoric $stockHistoric): self
+    {
+        if ($this->stockHistorics->removeElement($stockHistoric)) {
+            // set the owning side to null (unless already changed)
+            if ($stockHistoric->getProduct() === $this) {
+                $stockHistoric->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Categories
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Categories $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
