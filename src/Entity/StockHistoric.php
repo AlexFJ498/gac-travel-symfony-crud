@@ -28,7 +28,7 @@ class StockHistoric
     private $stock;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="stockHistorics")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="stockHistorics")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -42,30 +42,6 @@ class StockHistoric
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): self
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getProductId(): ?int
-    {
-        return $this->product_id;
-    }
-
-    public function setProductId(int $product_id): self
-    {
-        $this->product_id = $product_id;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -97,7 +73,7 @@ class StockHistoric
         return $this->user;
     }
 
-    public function setUser(?Users $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
