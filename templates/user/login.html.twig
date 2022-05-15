@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}{{ "Iniciar sesión"|trans }}{% endblock %}
 
 {% block body %}
 <!-- loader Start -->
@@ -72,12 +72,4 @@
 
 <!-- app JavaScript -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
-{% endblock %}
-
-{% block javascripts %}
-    $(document).ready(function() {
-        $('#loginBtn').click(function() {
-            login()
-        });
-    });
 {% endblock %}

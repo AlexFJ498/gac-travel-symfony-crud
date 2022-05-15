@@ -6,9 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"username"}, message="El nombre de usuario ya existe")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,6 +24,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="El nombre de usuario no puede estar vacio")
+     * @Assert\Length(min=4, minMessage="El nombre de usuario debe tener al menos 4 caracteres")
+     * @Assert\Regex(pattern="/^[a-zA-Z0-9]+$/", message="El nombre de usuario solo puede contener letras y numeros")
      */
     private $username;
 
@@ -32,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="La contraseña no puede estar vacia")
+     * @Assert\Length(min=5, minMessage="La contraseña debe tener al menos 5 caracteres")
+     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/", message="La contraseña debe tener al menos una mayuscula, una minuscula, un numero y un caracter especial")
      */
     private $password;
 
@@ -81,8 +90,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_ADMIN
+        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
