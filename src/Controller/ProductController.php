@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Products;
+use App\Entity\StockHistoric;
 use App\Form\Products\ProductType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,7 +81,7 @@ class ProductController extends AbstractController
             // Obtenemos los datos del formulario y seteamos el resto de campos
             $product = $form->getData();
             
-            // Guardamos el producto
+            // Editamos el producto
             $em = $this->getDoctrine()->getManager();
 
             try{
@@ -105,10 +106,16 @@ class ProductController extends AbstractController
     public function delete(Request $request, $id): Response
     {
         $product = $this->getDoctrine()->getRepository(Products::class)->find($id);
-
-        // Guardamos el producto
         $em = $this->getDoctrine()->getManager();
 
+        // Borramos los historicos del producto
+        $stockHistoric = $this->getDoctrine()->getRepository(StockHistoric::class)->findBy(['product' => $id]);
+        
+        foreach ($stockHistoric as $stock) {
+            $em->remove($stock);
+        }
+        
+        // Borramos el producto
         try{
             $em->remove($product);
             $em->flush();
@@ -133,7 +140,7 @@ class ProductController extends AbstractController
             // Obtenemos el producto
             $product = $this->getDoctrine()->getRepository(Products::class)->find($id);
     
-            // Guardamos el producto
+            // Guardamos el stock
             $em = $this->getDoctrine()->getManager();
 
             $product->setStock($product->getStock() + $stock);

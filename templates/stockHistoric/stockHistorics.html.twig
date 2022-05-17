@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Productos - Stockify{% endblock %}
+{% block title %}Histórico - Stockify{% endblock %}
 
 {% block body %}
  <!-- loader Start -->
@@ -58,11 +58,9 @@
                 <div class="col-lg-12">
                     <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                         <div>
-                            <h4 class="mb-3">Productos</h4>
+                            <h4 class="mb-3">Histórico de "{{ product.name }}"</h4>
                         </div>
-                        <a href="{{ path('product_add') }}" class="btn btn-primary add-list">
-                            <i class="las la-plus mr-3"></i>Nuevo producto
-                        </a>
+                        <a href="{{ path('product_list') }}" class="btn btn-primary">Volver</a>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -70,34 +68,19 @@
                         <table class="table mb-0 tbl-server-info no-footer" role="grid">
                             <thead class="bg-white text-uppercase">
                                 <tr class="ligth ligth-data" role="row">
-                                    <th class="text-left">Nombre</th>
-                                    <th class="text-left">Código</th>
-                                    <th class="text-left">Categoría</th>
+                                    <th class="text-center">Código</th>
+                                    <th class="text-center">Usuario</th>
+                                    <th class="text-center">Fecha</th>
                                     <th class="text-center">Stock</th>
-                                    <th class="text-right">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for product in products %}
+                                {% for stock in stocks %}
                                 <tr>
-                                    <td class="text-left">{{ product.name }}</td>
-                                    <td class="text-left id">{{ product.id }}</td>
-                                    <td class="text-left">{{ product.category.name }}</td>
-                                    <td class="text-center">{{ product.stock }}</td>
-                                    <td class="text-right">
-                                        <a class="delete badge bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" href="#">
-                                            <i class="las la-minus"></i>
-                                        </a>
-                                        <a class="add_stock badge bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modificar stock" href="#">
-                                            <i class="las la-plus"></i>
-                                        </a>
-                                        <a class="stock badge bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Histórico" href="#">
-                                            <i class="las la-history"></i>
-                                        </a>
-                                        <a class="edit badge bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" href="#">
-                                            <i class="ri-pencil-line"></i>
-                                        </a>
-                                    </td>
+                                    <td class="text-center">{{ stock.id }}</td>
+                                    <td class="text-center">{{ stock.user.username }}</td>
+                                    <td class="text-center">{{ stock.createdAt|date('d-m-Y') }}</td>
+                                    <td class="text-center">{{ stock.stock }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -145,12 +128,6 @@
         $('.edit').click(function() {
             var id = $(this).closest('tr').find('td.id').text();
             var url = "{{ path('product_edit', {'id': 'id'}) }}".replace('id', id);
-            window.location.href = url;
-        });
-
-        $('.stock').click(function() {
-            var id = $(this).closest('tr').find('td.id').text();
-            var url = "{{ path('stock_list', {'id': 'id'}) }}".replace('id', id);
             window.location.href = url;
         });
 

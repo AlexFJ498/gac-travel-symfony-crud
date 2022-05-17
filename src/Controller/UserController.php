@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\StockHistoric;
 use App\Form\Users\UserType;
 use App\Form\Users\SignUpType;
 use App\Service\UserService;
@@ -195,6 +196,14 @@ class UserController extends AbstractController
             return $this->render('general/error.html.twig', ['message' => 'No puedes borrar tu propio usuario']);
         }
 
+        // Borramos los historicos del usuario
+        $stockHistoric = $this->getDoctrine()->getRepository(StockHistoric::class)->findBy(['user' => $user->getId()]);
+        
+        foreach ($stockHistoric as $stock) {
+            $em->remove($stock);
+        }
+
+        // Borramos el usuario
         try{
             $em->remove($user);
             $em->flush();

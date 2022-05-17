@@ -68,7 +68,7 @@ class StockHistoric
         return $this;
     }
 
-    public function getUser(): ?Users
+    public function getUser(): ?User
     {
         return $this->user;
     }

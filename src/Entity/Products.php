@@ -21,7 +21,7 @@ class Products
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="El nombre del producto no puede estar vacio")
      */
     private $name;

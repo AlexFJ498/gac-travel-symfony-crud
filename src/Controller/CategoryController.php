@@ -109,7 +109,7 @@ class CategoryController extends AbstractController
             $em->remove($category);
             $em->flush();
         } catch (\Exception $e) {
-            return $this->render('general/error.html.twig', ['message' => "Error al eliminar la categoría"]);
+            return $this->render('general/error.html.twig', ['message' => "No puedes borrar una categoría que está siendo usada en uno o más productos"]);
         }
 
         return $this->redirectToRoute('category_list');
