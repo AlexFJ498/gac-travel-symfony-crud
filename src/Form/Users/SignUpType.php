@@ -8,11 +8,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class SignUpType extends AbstractType
 {
     /**
      * Función para crear el formulario de añadir usuario
@@ -22,7 +21,7 @@ class UserType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'required' => true,
-                'label' => 'Nombre de Usuario *',
+                'label' => 'Usuario',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'floating-input form-control'
@@ -31,7 +30,7 @@ class UserType extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'required' => true,
-                'label' => 'Contraseña *',
+                'label' => 'Contraseña',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'floating-input form-control'
@@ -39,7 +38,7 @@ class UserType extends AbstractType
                 'empty_data' => ''
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Añadir usuario',
+                'label' => 'Crear cuenta',
                 'attr' => [
                     'class' => 'btn btn-primary mr-2'
                 ]

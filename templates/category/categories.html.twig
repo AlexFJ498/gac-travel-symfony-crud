@@ -24,7 +24,7 @@
             <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
                     <li>
-                        <a href="{{ path('product_add') }}" class="svg-icon">                        
+                        <a href="{{ path('product_list') }}" class="svg-icon">                        
                             <svg  class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
                             </svg>
@@ -72,13 +72,24 @@
                                 <tr class="ligth ligth-data" role="row">
                                     <th class="text-left">Nombre</th>
                                     <th class="text-center">Código</th>
+                                    <th class="text-right">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for category in categories %}
                                 <tr>
-                                    <td class="text-left">Balones de fútbol</td>
-                                    <td class="text-center">11</td>
+                                    <td class="text-left">{{ category.name }}</td>
+                                    <td class="text-center id">{{ category.id }}</td>
+                                    <td class="text-right">
+                                        <a class="delete badge bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" href="#">
+                                            <i class="las la-minus"></i>
+                                        </a>
+                                        <a class="edit badge bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" href="#">
+                                            <i class="ri-pencil-line"></i>
+                                        </a>
+                                    </td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -93,4 +104,39 @@
 
 <!-- app JavaScript -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        $('.delete').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('category_delete', {'id': 'id'}) }}".replace('id', id);
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "!No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '!Si, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+        $('.edit').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('category_edit', {'id': 'id'}) }}".replace('id', id);
+            window.location.href = url;
+        });
+    });
+</script>
 {% endblock %}

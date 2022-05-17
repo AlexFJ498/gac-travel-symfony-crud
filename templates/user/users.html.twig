@@ -80,7 +80,7 @@
                                 {% for user in users %}
                                 <tr>
                                     <td class="text-left">{{ user.username }}</td>
-                                    <td class="text-left">{{ user.id }}</td>
+                                    <td class="text-left id">{{ user.id }}</td>
                                     <td class="text-center">
                                     {% if user.active == 1 %}
                                         {{ 'Si' }}
@@ -89,10 +89,10 @@
                                     {% endif %}
                                     </td>
                                     <td class="text-right">
-                                        <a class="badge bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" href="#">
+                                        <a class="delete badge bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" href="#">
                                             <i class="las la-minus"></i>
                                         </a>
-                                        <a class="badge bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" href="#">
+                                        <a class="edit badge bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" href="#">
                                             <i class="ri-pencil-line"></i>
                                         </a>
                                     </td>
@@ -112,4 +112,39 @@
 
 <!-- app JavaScript -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        $('.delete').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('user_delete', {'id': 'id'}) }}".replace('id', id);
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "!No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '!Si, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+        $('.edit').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('user_edit', {'id': 'id'}) }}".replace('id', id);
+            window.location.href = url;
+        });
+    });
+</script>
 {% endblock %}

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form\Users;
+namespace App\Form\Categories;
 
-use App\Entity\User;
+use App\Entity\Categories;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,26 +12,17 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class CategoryType extends AbstractType
 {
     /**
-     * Función para crear el formulario de añadir usuario
+     * Función para crear el formulario de añadir categoría
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class, [
+            ->add('name', TextType::class, [
                 'required' => true,
-                'label' => 'Nombre de Usuario *',
-                'attr' => [
-                    'placeholder' => '',
-                    'class' => 'floating-input form-control'
-                ],
-                'empty_data' => ''
-            ])
-            ->add('password', PasswordType::class, [
-                'required' => true,
-                'label' => 'Contraseña *',
+                'label' => 'Nombre de categoría *',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'floating-input form-control'
@@ -39,7 +30,7 @@ class UserType extends AbstractType
                 'empty_data' => ''
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Añadir usuario',
+                'label' => 'Añadir categoría',
                 'attr' => [
                     'class' => 'btn btn-primary mr-2'
                 ]
@@ -50,7 +41,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Categories::class,
         ]);
     }
 }

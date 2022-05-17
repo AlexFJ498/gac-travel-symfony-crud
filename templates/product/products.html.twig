@@ -78,26 +78,28 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for product in products %}
                                 <tr>
-                                    <td class="text-left">Accelerate FIFA Pro</td>
-                                    <td class="text-left">1</td>
-                                    <td class="text-left">Balones de fútbol</td>
-                                    <td class="text-center">10</td>
+                                    <td class="text-left">{{ product.name }}</td>
+                                    <td class="text-left id">{{ product.id }}</td>
+                                    <td class="text-left">{{ product.category.name }}</td>
+                                    <td class="text-center">{{ product.stock }}</td>
                                     <td class="text-right">
-                                        <a class="badge bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar stock" href="#">
+                                        <a class="delete badge bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" href="#">
                                             <i class="las la-minus"></i>
                                         </a>
-                                        <a class="badge bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Añadir stock" href="#">
+                                        <a class="add_stock badge bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modificar stock" href="#">
                                             <i class="las la-plus"></i>
                                         </a>
                                         <a class="badge bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Histórico" href="#">
                                             <i class="las la-history"></i>
                                         </a>
-                                        <a class="badge bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" href="#">
+                                        <a class="edit badge bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" href="#">
                                             <i class="ri-pencil-line"></i>
                                         </a>
                                     </td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -112,4 +114,78 @@
 
 <!-- app JavaScript -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        $('.delete').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('product_delete', {'id': 'id'}) }}".replace('id', id);
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "!No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '!Si, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+        $('.edit').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('product_edit', {'id': 'id'}) }}".replace('id', id);
+            window.location.href = url;
+        });
+
+        $('.add_stock').click(function() {
+            var id = $(this).closest('tr').find('td.id').text();
+            var url = "{{ path('product_stock', {'id': 'id'}) }}".replace('id', id);
+            
+            Swal.fire({
+                title: 'Modificar stock',
+                text: "Indique el valor a añadir/restar al stock",
+                input: 'number',
+                inputAttributes: {
+                    min: -100,
+                    max: 100,
+                    step: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Agregar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            'id': id,
+                            'stock': result.value
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: '¡Hecho!',
+                                text: 'El stock se ha modificado correctamente.',
+                                icon: 'success'
+                            }).then((result) => {
+                                window.location.href = "{{ path('product_list') }}";
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

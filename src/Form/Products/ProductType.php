@@ -1,45 +1,49 @@
 <?php
 
-namespace App\Form\Users;
+namespace App\Form\Products;
 
-use App\Entity\User;
+use App\Entity\Products;
+use App\Entity\Categories;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class ProductType extends AbstractType
 {
     /**
-     * Función para crear el formulario de añadir usuario
+     * Función para crear el formulario de añadir producto
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class, [
+            ->add('name', TextType::class, [
                 'required' => true,
-                'label' => 'Nombre de Usuario *',
+                'label' => 'Nombre del Producto *',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'floating-input form-control'
                 ],
                 'empty_data' => ''
             ])
-            ->add('password', PasswordType::class, [
+            ->add('category', EntityType::class, [
                 'required' => true,
-                'label' => 'Contraseña *',
+                'label' => 'Categoría *',
                 'attr' => [
                     'placeholder' => '',
                     'class' => 'floating-input form-control'
                 ],
-                'empty_data' => ''
+                'empty_data' => '',
+                // Obtenemos las categorías de la tabla correspondiente
+                'class' => Categories::class,
+                'choice_label' => 'name',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Añadir usuario',
+                'label' => 'Añadir producto',
                 'attr' => [
                     'class' => 'btn btn-primary mr-2'
                 ]
@@ -50,7 +54,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Products::class,
         ]);
     }
 }

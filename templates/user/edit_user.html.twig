@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nueva categoría - Stockify{% endblock %}
+{% block title %}Editar usuario - Stockify{% endblock %}
 
 {% block body %}
 <!-- loader Start -->
@@ -31,7 +31,7 @@
                             <span class="ml-4">Productos</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="{{ path('category_list') }}" class="svg-icon">                        
                             <svg class="svg-icon" id="p-dash3" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -39,7 +39,7 @@
                             <span class="ml-4">Categorías</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="{{ path('user_list') }}" class="svg-icon">                        
                             <svg class="svg-icon" id="p-dash8" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
@@ -58,20 +58,31 @@
                 <div class="col-lg-12">
                     <div class="d-flex flex-wrap flex-wrap align-items-center justify-content-between mb-4">
                         <div>
-                            <h4 class="mb-3">Nueva categoría</h4>
+                            <h4 class="mb-3">Editar usuario</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-12">
                     {{ form_start(form) }}
                         <div class="row">
-                            <div class="col-md-12">                    
+                            <div class="col-md-6">               
                                 <div class="form-group">
-                                    {{ form_label(form.name) }}
-                                    {{ form_widget(form.name) }}
+                                    {{ form_label(form.username) }}
+                                    {{ form_widget(form.username) }}
                                     <div class="help-block with-errors">
                                         <ul class="list-unstyled">
-                                            {{ form_errors(form.name) }}
+                                            {{ form_errors(form.username) }}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.password) }}
+                                    {{ form_widget(form.password) }}
+                                    <div class="help-block with-errors">
+                                        <ul class="list-unstyled">
+                                            {{ form_errors(form.password) }}
                                         </ul>
                                     </div>
                                 </div>
